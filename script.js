@@ -13,25 +13,15 @@ document.addEventListener("DOMContentLoaded", function() {
   // Toggle Instructions for QVR
   document.getElementById("toggleInstructionsQVR").addEventListener("click", function() {
     const instrContainer = document.getElementById("instructionsQVR");
-    if (instrContainer.style.display === "none" || instrContainer.style.display === "") {
-      instrContainer.style.display = "block";
-      this.textContent = "Hide Instructions";
-    } else {
-      instrContainer.style.display = "none";
-      this.textContent = "Show Instructions";
-    }
+    instrContainer.style.display = instrContainer.style.display === "block" ? "none" : "block";
+    this.textContent = instrContainer.style.display === "block" ? "Hide Instructions" : "Show Instructions";
   });
 
   // Toggle Instructions for QP
   document.getElementById("toggleInstructionsQP").addEventListener("click", function() {
     const instrContainer = document.getElementById("instructionsQP");
-    if (instrContainer.style.display === "none" || instrContainer.style.display === "") {
-      instrContainer.style.display = "block";
-      this.textContent = "Hide Instructions";
-    } else {
-      instrContainer.style.display = "none";
-      this.textContent = "Show Instructions";
-    }
+    instrContainer.style.display = instrContainer.style.display === "block" ? "none" : "block";
+    this.textContent = instrContainer.style.display === "block" ? "Hide Instructions" : "Show Instructions";
   });
 
   // Generate QVR text
@@ -93,10 +83,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const outputElem = document.getElementById("outputQVR");
     const outputText = outputElem.innerText.trim();
 
-    if (!outputText) {
-      alert("No text to copy!");
-      return;
-    }
+    if (!outputText || outputText === "Nil") return; // Do nothing if empty
 
     navigator.clipboard.writeText(outputText).then(() => {
       const copyBtn = document.getElementById("copyQVR");
@@ -108,7 +95,6 @@ document.addEventListener("DOMContentLoaded", function() {
       }, 2000);
     }).catch(err => {
       console.error("Failed to copy text: ", err);
-      alert("Failed to copy text. Please try again.");
     });
   });
 
@@ -117,10 +103,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const outputElem = document.getElementById("outputQP");
     const outputText = outputElem.innerText.trim();
 
-    if (!outputText) {
-      alert("No text to copy!");
-      return;
-    }
+    if (!outputText || outputText === "Nil") return; // Do nothing if empty
 
     navigator.clipboard.writeText(outputText).then(() => {
       const copyBtn = document.getElementById("copyQP");
@@ -132,7 +115,6 @@ document.addEventListener("DOMContentLoaded", function() {
       }, 2000);
     }).catch(err => {
       console.error("Failed to copy text: ", err);
-      alert("Failed to copy text. Please try again.");
     });
   });
 });
