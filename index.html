@@ -3,144 +3,294 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QP & QVR Generator</title>
+  <title>Custody Management Guide</title>
+  <!-- Reference your external CSS file (if separate) -->
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Additional table styling for a 3-column layout */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #555;
+      font-family: monospace;
+    }
+    th {
+      background: #444;
+      font-weight: bold;
+    }
+    /* Center align punishment (seconds) in its column */
+    .punishment {
+      text-align: center;
+    }
+    /* Warning text in red */
+    .warning {
+      color: red;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
-    <h2 class="title">QP & QVR Generator</h2>
-    <div class="toggle-buttons">
-      <button id="showQVR">Vehicle | QVR Generator</button>
-      <button id="showQP">Character | QP Generator</button>
+    <!-- Title -->
+    <h2 class="title">Custody Management Guide</h2>
+    
+    <!-- Introductory Text -->
+    <p>Welcome to the Custody Management section.</p>
+    <p>
+      When a person has been arrested, they must be identified via name or fingerprints and searched prior to jail. Once completed, they can be jailed using 
+      <code>/jail [ID] [time]</code>.
+    </p>
+    <p class="warning">
+      <strong>Officers must follow the guide below for jail timing. DO NOT stack offences – choose the highest applicable offence.</strong>
+    </p>
+    
+    <!-- Offence Category Dropdown -->
+    <div class="form-group">
+      <label for="categorySelect" style="width:100%; text-align:left; margin-bottom:5px;">Select Offence Category:</label>
+      <select id="categorySelect">
+        <option value="violence">Violence</option>
+        <option value="drugs">Drugs &amp; Anti Social Behaviour</option>
+        <option value="dishonesty">Dishonesty</option>
+        <option value="property">Property Damage/Offences</option>
+        <option value="misc">Miscellaneous</option>
+        <option value="traffic">Traffic Offending</option>
+      </select>
     </div>
-
-    <!-- QVR Section -->
-    <div id="qvrSection" class="generator-section">
-      <h3>QVR Creator</h3>
-      <div class="form-group">
-        <label>Vehicle Plate:</label>
-        <input type="text" id="plate" maxlength="6" pattern="[A-Za-z0-9]{1,6}" title="Only alphanumeric characters, max 6" placeholder="ABC123" />
-      </div>
-      <div class="form-group">
-        <label>Registered Owner:</label>
-        <input type="text" id="owner" placeholder="Eg. John Doe" />
-      </div>
-      <div class="form-group">
-        <label>Warrant of Fitness:</label>
-        <select id="woF">
-          <option value="Valid">Valid</option>
-          <option value="Invalid">Invalid</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Rego:</label>
-        <select id="rego">
-          <option value="Valid">Valid</option>
-          <option value="Invalid">Invalid</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Vehicle Make:</label>
-        <input type="text" id="make" placeholder="Eg. Nissan" />
-      </div>
-      <div class="form-group">
-        <label>Vehicle Model:</label>
-        <input type="text" id="model" placeholder="Eg. Skyline" />
-      </div>
-      <div class="form-group">
-        <label>Year:</label>
-        <input type="text" id="year" maxlength="4" pattern="\d{4}" title="Enter a 4-digit year" placeholder="2018" />
-      </div>
-      <div class="form-group">
-        <label>Colour:</label>
-        <input type="text" id="color" placeholder="Eg. Red" />
-      </div>
-      <div class="form-group">
-        <label>Flags:</label>
-        <input type="text" id="flags" placeholder="Eg. Owner has active WTA" />
-      </div>
-      <button id="generateQVR">Generate</button>
-
-      <!-- Instructions Toggle -->
-      <button class="toggle-instructions" id="toggleInstructionsQVR">Show Instructions</button>
-      <div class="instructions-container" id="instructionsQVR">
-        <ol class="instructions">
-          <li>Hit T on your keyboard to bring up text chat,</li>
-          <li>Type /civ to bring up the create character/vehicle menu,</li>
-          <li>Copy and paste the templates generated below and enter them into either your character or vehicle menu using the /civ command,</li>
-          <li>Save, login/make it active.</li>
-        </ol>
-      </div>
-
-      <!-- Output container with generated text and copy button below -->
-      <div class="output-container">
-        <p id="outputQVR" class="output"></p>
-        <button class="copy-btn" id="copyQVR">Copy</button>
-      </div>
+    
+    <!-- Search Input for Code / Offence -->
+    <div class="form-group">
+      <label for="searchInput" style="width:100%; text-align:left; margin-bottom:5px;">Search by Code or Offence:</label>
+      <input type="text" id="searchInput" placeholder="Enter code or text to search" />
     </div>
-
-    <!-- QP Section -->
-    <div id="qpSection" class="generator-section" style="display:none;">
-      <h3>QP Generator</h3>
-      <div class="form-group">
-        <label>First Name:</label>
-        <input type="text" id="firstName" placeholder="John" />
-      </div>
-      <div class="form-group">
-        <label>Last Name:</label>
-        <input type="text" id="lastName" placeholder="Doe" />
-      </div>
-      <div class="form-group">
-        <label>Date of Birth:</label>
-        <input type="text" id="age" placeholder="01 Jan 1994" />
-      </div>
-      <div class="form-group">
-        <label>Address:</label>
-        <input type="text" id="address" placeholder="845 Grove Street" />
-      </div>
-      <div class="form-group">
-        <label>Occupation:</label>
-        <input type="text" id="occupation" placeholder="Software Engineer" />
-      </div>
-      <div class="form-group checkbox-group">
-        <label>License(s):</label>
-        <input type="radio" name="license" value="1L" /> 1L
-        <input type="radio" name="license" value="1R" /> 1R
-        <input type="radio" name="license" value="1F" /> 1F
-      </div>
-      <div class="form-group checkbox-group">
-        <label>Other License(s):</label>
-        <input type="checkbox" name="otherLicenses" value="2" /> 2
-        <input type="checkbox" name="otherLicenses" value="3" /> 3
-        <input type="checkbox" name="otherLicenses" value="4" /> 4
-        <input type="checkbox" name="otherLicenses" value="5" /> 5
-        <input type="checkbox" name="otherLicenses" value="6" /> 6
-      </div>
-      <div class="form-group">
-        <label>Flags:</label>
-        <input type="text" id="qpFlags" placeholder="Known to be carrying weapons etc." />
-      </div>
-      <button id="generateQP">Generate</button>
-
-      <!-- Instructions Toggle -->
-      <button class="toggle-instructions" id="toggleInstructionsQP">Show Instructions</button>
-      <div class="instructions-container" id="instructionsQP">
-        <ol class="instructions">
-          <li>Hit T on your keyboard to bring up text chat,</li>
-          <li>Type /civ to bring up the create character/vehicle menu,</li>
-          <li>Copy and paste the templates generated below and enter them into either your character or vehicle menu using the /civ command,</li>
-          <li>Save, login/make it active.</li>
-        </ol>
-      </div>
-
-      <!-- Output container with generated text and copy button below -->
-      <div class="output-container">
-        <p id="outputQP" class="output"></p>
-        <button class="copy-btn" id="copyQP">Copy</button>
-      </div>
+    
+    <!-- Offence Table -->
+    <div id="offenceTableContainer">
+      <table id="offenceTable">
+        <thead>
+          <tr id="tableHeader">
+            <!-- Header is updated dynamically -->
+            <th>Code Number</th>
+            <th>Offence</th>
+            <th>Punishment (Seconds)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Table rows generated dynamically -->
+        </tbody>
+      </table>
     </div>
   </div>
   
-  <script src="script.js"></script>
+  <script>
+    // Offence data grouped by category
+    const offences = {
+      violence: [
+        { code: "1110", offence: "Murder", punishment: 300 },
+        { code: "1120", offence: "Attempted Murder", punishment: 250 },
+        { code: "1130", offence: "Manslaughter", punishment: 200 },
+        { code: "1210", offence: "Kidnapping/Abduction", punishment: 250 },
+        { code: "1310", offence: "Aggravated Robbery (Weapon)", punishment: 200 },
+        { code: "1316", offence: "Aggravated Robbery (Manual)", punishment: 150 },
+        { code: "1320", offence: "Robbery", punishment: 120 },
+        { code: "1410", offence: "Grievous Assault", punishment: 250 },
+        { code: "1510", offence: "Serious Assault", punishment: 150 },
+        { code: "1640", offence: "Minor Assault", punishment: 60 },
+        { code: "1710", offence: "Threats/Intimidation", punishment: 120 },
+        { code: "1540", offence: "Male Assaults Female", punishment: 150 },
+        { code: "1480", offence: "Use firearm on Police Officer", punishment: 200 },
+        { code: "1550", offence: "Assaults Police", punishment: 150 },
+        { code: "6340", offence: "Injures Police Dog", punishment: 200 },
+        { code: "6820", offence: "Firearms Offences (General)", punishment: 150 },
+        { code: "6851", offence: "Unlawfully Carries or possess firearm, restricted weapon, explosives or ammunition", punishment: 150 },
+        { code: "6852", offence: "Unlawfully Carries imitation Firearm", punishment: 100 },
+        { code: "6853", offence: "Intoxicated in Charge of firearm", punishment: 120 },
+        { code: "6854", offence: "Discharges Firearm in or near place/dwelling", punishment: 100 },
+        { code: "6856", offence: "Unlawful possess pistol or Restricted weapon", punishment: 100 },
+        { code: "3510", offence: "Obstructs Police", punishment: 80 }
+      ],
+      drugs: [
+        { code: "1710", offence: "Threatens to Kill", punishment: 100 },
+        { code: "1730", offence: "Threatening Behaviour", punishment: 80 },
+        { code: "1754", offence: "Possess Offensive Weapon", punishment: 100 },
+        { code: "1758", offence: "Unlawful possess knife", punishment: 80 },
+        { code: "1790", offence: "Threatening to Damage Property", punishment: 80 },
+        { code: "1820", offence: "Unlawful Assembly", punishment: 60 },
+        { code: "3110", offence: "Import, Supply or Produce Class A Drug", punishment: 120 },
+        { code: "3115", offence: "Import, Supply or Produce Class B Drug", punishment: 100 },
+        { code: "3210", offence: "Import, Supply or Produce Class C Drug", punishment: 80 },
+        { code: "3151", offence: "Possess Class A Drug", punishment: 80 },
+        { code: "3154", offence: "Possess Class B Drug", punishment: 70 },
+        { code: "3150", offence: "Possess Class C Drug", punishment: 60 },
+        { code: "3521", offence: "Incite Violence, disorder or lawlessness", punishment: 100 },
+        { code: "3535", offence: "Offensive Behaviours", punishment: 80 },
+        { code: "3537", offence: "Disorderly Behaviour (Private Premises)", punishment: 80 },
+        { code: "3560", offence: "Miscellaneous Disorder Offences", punishment: 80 },
+        { code: "3985", offence: "Breach of Council Liquor Ban", punishment: 80 },
+        { code: "3850", offence: "Contravenes Protection Order", punishment: 100 },
+        { code: "3920", offence: "Licensed Premises Liquor Offence (Selling to Minor(s))", punishment: 80 },
+        { code: "3950", offence: "Refusal to administer Police on Licensed Premises", punishment: 60 },
+        { code: "3970", offence: "Unlicensed Premises Liquor Offences", punishment: 60 }
+      ],
+      dishonesty: [
+        { code: "4120", offence: "Burglary", punishment: 150 },
+        { code: "4155", offence: "Aggravated Burglary", punishment: 200 },
+        { code: "4211", offence: "Unlawful Taking Motor Vehicle", punishment: 120 },
+        { code: "4220", offence: "Unlawfully Interfere with Motor Vehicle", punishment: 100 },
+        { code: "4230", offence: "Take, Convert or Interfere with Bicycle", punishment: 80 },
+        { code: "4320", offence: "Theft ex Shop", punishment: 60 },
+        { code: "4370", offence: "General Theft", punishment: 60 },
+        { code: "4378", offence: "Theft of Boat", punishment: 120 },
+        { code: "4530", offence: "Fraud", punishment: 120 }
+      ],
+      property: [
+        { code: "5110", offence: "Arson", punishment: 150 },
+        { code: "5113", offence: "Attempted Arson", punishment: 100 },
+        { code: "5120", offence: "Wilful Damage", punishment: 120 },
+        { code: "5210", offence: "Endangering/Interfering", punishment: 90 },
+        { code: "5232", offence: "Endangering Safety of Plane", punishment: 150 },
+        { code: "5235", offence: "Endangering Safety in Airport", punishment: 150 },
+        { code: "6110", offence: "Offences under Trespass Act", punishment: 100 },
+        { code: "6210", offence: "Littering", punishment: 15 }
+      ],
+      misc: [
+        { code: "1840", offence: "Harassment", punishment: 80 },
+        { code: "6333", offence: "Breach Of Fisheries Act", punishment: 100 },
+        { code: "6391", offence: "Cruelty to or Ill-treatment of Animals", punishment: 100 },
+        { code: "6530", offence: "Fire Service Abuses", punishment: 100 },
+        { code: "6550", offence: "Telecommunications Act Offences", punishment: 60 },
+        { code: "7125", offence: "Obstruct/Pervert/Defeat Course of Justice", punishment: 100 },
+        { code: "7130", offence: "Escapes Custody", punishment: 200 },
+        { code: "7510", offence: "Treason", punishment: 300 },
+        { code: "6D", offence: "Bail Breach", punishment: 80 }
+      ],
+      traffic: [
+        { code: "Failed to Stop for Red/Blue", offence: "", punishment: 120 },
+        { code: "Failed to Remain Stopped", offence: "", punishment: 120 },
+        { code: "Failed to Provide Particulars", offence: "", punishment: 60 },
+        { code: "Breath Alcohol Exceeds 400mcg", offence: "", punishment: 100 },
+        { code: "Driving in a Dangerous Manner", offence: "", punishment: 100 },
+        { code: "Driving while Disqualified", offence: "", punishment: 100 },
+        { code: "Careless Driving causing Death", offence: "", punishment: 300 },
+        { code: "Careless Driving causing Injury", offence: "", punishment: 150 }
+      ]
+    };
+
+    const categorySelect = document.getElementById('categorySelect');
+    const offenceTableBody = document.querySelector('#offenceTable tbody');
+    const searchInput = document.getElementById('searchInput');
+    const tableHeader = document.getElementById('tableHeader');
+
+    // Helper to check if a string is numeric.
+    function isNumeric(str) {
+      return /^\d+$/.test(str.trim());
+    }
+
+    // Update the table based on the dropdown and search input.
+    function updateTable() {
+      const searchTerm = searchInput.value.trim().toLowerCase();
+      offenceTableBody.innerHTML = '';
+
+      if (searchTerm !== "") {
+        // Global search: Collect matching items from all categories
+        let results = [];
+        for (let category in offences) {
+          offences[category].forEach(item => {
+            const codeText = item.code.toLowerCase();
+            const offenceText = (item.offence || "").toLowerCase();
+            if (codeText.indexOf(searchTerm) !== -1 || offenceText.indexOf(searchTerm) !== -1) {
+              results.push(item);
+            }
+          });
+        }
+        // Determine if all matching items have non-numeric code (e.g., text-based descriptions)
+        const allNonNumeric = results.length > 0 && results.every(item => !isNumeric(item.code));
+        if (allNonNumeric) {
+          // If all matching results are non-numeric, use a 2-column header.
+          tableHeader.innerHTML = '<th>Offence</th><th>Punishment (Seconds)</th>';
+        } else {
+          // Otherwise, use a full three-column header.
+          tableHeader.innerHTML = '<th>Code Number</th><th>Offence</th><th>Punishment (Seconds)</th>';
+        }
+        // Build rows for each matching result.
+        results.forEach(item => {
+          const row = document.createElement('tr');
+          if (allNonNumeric) {
+            // 2-column row: Use the code field (which is text-based) as the offence text.
+            const offenceCell = document.createElement('td');
+            const punishmentCell = document.createElement('td');
+            offenceCell.textContent = item.code;
+            punishmentCell.textContent = item.punishment;
+            punishmentCell.classList.add("punishment");
+            row.appendChild(offenceCell);
+            row.appendChild(punishmentCell);
+          } else {
+            // 3-column row
+            const codeCell = document.createElement('td');
+            const offenceCell = document.createElement('td');
+            const punishmentCell = document.createElement('td');
+            codeCell.textContent = item.code;
+            offenceCell.textContent = item.offence;
+            punishmentCell.textContent = item.punishment;
+            punishmentCell.classList.add("punishment");
+            row.appendChild(codeCell);
+            row.appendChild(offenceCell);
+            row.appendChild(punishmentCell);
+          }
+          offenceTableBody.appendChild(row);
+        });
+      } else {
+        // No search term: Display items from the selected category.
+        const selectedCategory = categorySelect.value;
+        if (selectedCategory === 'traffic') {
+          tableHeader.innerHTML = '<th>Offence</th><th>Punishment (Seconds)</th>';
+        } else {
+          tableHeader.innerHTML = '<th>Code Number</th><th>Offence</th><th>Punishment (Seconds)</th>';
+        }
+        if (offences[selectedCategory]) {
+          offences[selectedCategory].forEach(item => {
+            const row = document.createElement('tr');
+            if (selectedCategory === 'traffic') {
+              const offenceCell = document.createElement('td');
+              const punishmentCell = document.createElement('td');
+              offenceCell.textContent = item.code;
+              punishmentCell.textContent = item.punishment;
+              punishmentCell.classList.add("punishment");
+              row.appendChild(offenceCell);
+              row.appendChild(punishmentCell);
+            } else {
+              const codeCell = document.createElement('td');
+              const offenceCell = document.createElement('td');
+              const punishmentCell = document.createElement('td');
+              codeCell.textContent = item.code;
+              offenceCell.textContent = item.offence;
+              punishmentCell.textContent = item.punishment;
+              punishmentCell.classList.add("punishment");
+              row.appendChild(codeCell);
+              row.appendChild(offenceCell);
+              row.appendChild(punishmentCell);
+            }
+            offenceTableBody.appendChild(row);
+          });
+        }
+      }
+    }
+
+    // Initialize the table on load.
+    updateTable();
+
+    // When the category dropdown changes, clear the search and update the table.
+    categorySelect.addEventListener('change', () => {
+      if (searchInput.value.trim() !== "") {
+        searchInput.value = "";
+      }
+      updateTable();
+    });
+    // Update the table on every keyup in the search input.
+    searchInput.addEventListener('keyup', updateTable);
+  </script>
 </body>
 </html>
