@@ -1,13 +1,3 @@
-/* Hide scrollbars in Webkit-based browsers */
-      overflow-y: scroll;
-    }
-    ::-webkit-scrollbar {
-      display: none;
-    }
-    html {
-      scrollbar-width: none;
-    }
-
 body {
   background: #1e1e1e;
   color: white;
