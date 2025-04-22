@@ -2,16 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>QP & QVR Generator</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
     <h2 class="title">QP & QVR Generator</h2>
+
     <div class="toggle-buttons">
-      <button id="showQVR">Vehicle | QVR Generator</button>
-      <button id="showQP">Character | QP Generator</button>
+      <button onclick="showQVR()">Vehicle | QVR Generator</button>
+      <button onclick="showQP()">Character | QP Generator</button>
     </div>
 
     <!-- QVR Section -->
@@ -19,7 +20,7 @@
       <h3>QVR Creator</h3>
       <div class="form-group">
         <label>Vehicle Plate:</label>
-        <input type="text" id="plate" maxlength="6" pattern="[A-Za-z0-9]{1,6}" title="Only alphanumeric characters, max 6" placeholder="ABC123" />
+        <input type="text" id="plate" maxlength="6" placeholder="ABC123" />
       </div>
       <div class="form-group">
         <label>Registered Owner:</label>
@@ -28,15 +29,13 @@
       <div class="form-group">
         <label>Warrant of Fitness:</label>
         <select id="woF">
-          <option value="Valid">Valid</option>
-          <option value="Invalid">Invalid</option>
+          <option>Valid</option><option>Invalid</option>
         </select>
       </div>
       <div class="form-group">
         <label>Rego:</label>
         <select id="rego">
-          <option value="Valid">Valid</option>
-          <option value="Invalid">Invalid</option>
+          <option>Valid</option><option>Invalid</option>
         </select>
       </div>
       <div class="form-group">
@@ -49,7 +48,7 @@
       </div>
       <div class="form-group">
         <label>Year:</label>
-        <input type="text" id="year" maxlength="4" pattern="\d{4}" title="Enter a 4-digit year" placeholder="2018" />
+        <input type="text" id="year" maxlength="4" placeholder="2018" />
       </div>
       <div class="form-group">
         <label>Colour:</label>
@@ -59,23 +58,20 @@
         <label>Flags:</label>
         <input type="text" id="flags" placeholder="Eg. Owner has active WTA" />
       </div>
-      <button id="generateQVR">Generate</button>
+      <button class="generate" id="generateQVR">Generate QVR</button>
 
-      <!-- Instructions Toggle -->
       <button class="toggle-instructions" id="toggleInstructionsQVR">Show Instructions</button>
       <div class="instructions-container" id="instructionsQVR">
         <ol class="instructions">
-          <li>Hit T on your keyboard to bring up text chat,</li>
-          <li>Type /civ to bring up the create character/vehicle menu,</li>
-          <li>Copy and paste the templates generated below and enter them into either your character or vehicle menu using the /civ command,</li>
-          <li>Save, login/make it active.</li>
+          <li>Hit T in chat,</li>
+          <li>Type /civ,</li>
+          <li>Paste the generated QVR into the vehicle menu,</li>
+          <li>Save and activate.</li>
         </ol>
       </div>
 
-      <!-- Output container with generated text and copy button below -->
       <div class="output-container">
-        <p id="outputQVR" class="output"></p>
-        <button class="copy-btn" id="copyQVR">Copy</button>
+        <p id="outputQVR" class="output" onclick="selectText(this)"></p>
       </div>
     </div>
 
@@ -92,7 +88,7 @@
       </div>
       <div class="form-group">
         <label>Date of Birth:</label>
-        <input type="text" id="age" placeholder="01 Jan 1994" />
+        <input type="text" id="age" placeholder="01 Jan 1994" />
       </div>
       <div class="form-group">
         <label>Address:</label>
@@ -104,45 +100,133 @@
       </div>
       <div class="form-group checkbox-group">
         <label>License(s):</label>
-        <input type="radio" name="license" value="1L" /> 1L
-        <input type="radio" name="license" value="1R" /> 1R
-        <input type="radio" name="license" value="1F" /> 1F
+        <input type="radio" name="license" value="1L" /> 1L
+        <input type="radio" name="license" value="1R" /> 1R
+        <input type="radio" name="license" value="1F" /> 1F
       </div>
       <div class="form-group checkbox-group">
         <label>Other License(s):</label>
-        <input type="checkbox" name="otherLicenses" value="2" /> 2
-        <input type="checkbox" name="otherLicenses" value="3" /> 3
-        <input type="checkbox" name="otherLicenses" value="4" /> 4
-        <input type="checkbox" name="otherLicenses" value="5" /> 5
-        <input type="checkbox" name="otherLicenses" value="6" /> 6
+        <input type="checkbox" name="otherLicenses" value="2" /> 2
+        <input type="checkbox" name="otherLicenses" value="3" /> 3
+        <input type="checkbox" name="otherLicenses" value="4" /> 4
+        <input type="checkbox" name="otherLicenses" value="5" /> 5
+        <input type="checkbox" name="otherLicenses" value="6" /> 6
       </div>
       <div class="form-group">
         <label>Flags:</label>
         <input type="text" id="qpFlags" placeholder="Known to be carrying weapons etc." />
       </div>
-      <button id="generateQP">Generate</button>
+      <button class="generate" id="generateQP">Generate QP</button>
 
-      <!-- Instructions Toggle -->
       <button class="toggle-instructions" id="toggleInstructionsQP">Show Instructions</button>
       <div class="instructions-container" id="instructionsQP">
         <ol class="instructions">
-          <li>Hit T on your keyboard to bring up text chat,</li>
-          <li>Type /civ to bring up the create character/vehicle menu,</li>
-          <li>Copy and paste the templates generated below and enter them into either your character or vehicle menu using the /civ command,</li>
-          <li>Save, login/make it active.</li>
+          <li>Hit T in chat,</li>
+          <li>Type /civ,</li>
+          <li>Paste the generated QP into the character menu,</li>
+          <li>Save and activate.</li>
         </ol>
       </div>
 
-      <!-- Output container with generated text and copy button below -->
       <div class="output-container">
-        <p id="outputQP" class="output"></p>
-        <button class="copy-btn" id="copyQP">Copy</button>
+        <p id="outputQP" class="output" onclick="selectText(this)"></p>
       </div>
     </div>
   </div>
-  <br></br>
- <center><b><a href="https://nzdurriez.github.io/CharacterCreation/" target="_self" style="color:orange;">Return to Character Creation Guide</a></b>.</center>
-  <br></br>
-  <script src="script.js"></script>
+
+  <br>
+  <center>
+    <b>
+      <a href="https://nzdurriez.github.io/CharacterCreation/" style="color:orange;">
+        Return to Character Creation Guide
+      </a>
+    </b>.
+  </center>
+  <br>
+
+  <script>
+    // Section toggles
+    function showQVR() {
+      document.getElementById('qvrSection').style.display = 'block';
+      document.getElementById('qpSection').style.display  = 'none';
+    }
+    function showQP() {
+      document.getElementById('qvrSection').style.display = 'none';
+      document.getElementById('qpSection').style.display  = 'block';
+    }
+
+    // Show/Hide instructions
+    function toggleInstructions(btnId, containerId) {
+      const btn = document.getElementById(btnId);
+      const c   = document.getElementById(containerId);
+      btn.addEventListener('click', () => {
+        if (c.style.display === 'block') {
+          c.style.display = '';
+          btn.textContent = 'Show Instructions';
+        } else {
+          c.style.display = 'block';
+          btn.textContent = 'Hide Instructions';
+        }
+      });
+    }
+    toggleInstructions('toggleInstructionsQVR','instructionsQVR');
+    toggleInstructions('toggleInstructionsQP','instructionsQP');
+
+    // Force uppercase on plate input
+    document.getElementById('plate').addEventListener('input', function() {
+      this.value = this.value.toUpperCase();
+    });
+
+    // Press Enter anywhere to generate
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        if (document.getElementById('qvrSection').style.display !== 'none') {
+          document.getElementById('generateQVR').click();
+        } else {
+          document.getElementById('generateQP').click();
+        }
+      }
+    });
+
+    // QVR generation
+    document.getElementById('generateQVR').addEventListener('click', () => {
+      const plate = (document.getElementById('plate').value || 'Nil').toUpperCase();
+      const owner = document.getElementById('owner').value || 'Nil';
+      const woF   = document.getElementById('woF').value   || 'Nil';
+      const rego  = document.getElementById('rego').value  || 'Nil';
+      const make  = document.getElementById('make').value  || 'Nil';
+      const model = document.getElementById('model').value || 'Nil';
+      const year  = document.getElementById('year').value  || 'Nil';
+      const color = document.getElementById('color').value || 'Nil';
+      const flags = document.getElementById('flags').value || 'Nil';
+      const txt = `~y~Plate:~b~${plate} ~y~Make:~b~${make} ~y~Model:~b~${model} ~y~Colour:~b~${color} ~y~Year:~b~${year} ~y~Registered Owner:~b~${owner} ~y~WOF:~b~${woF} ~y~REG:~b~${rego} ~y~Flags:~b~${flags}`;
+      document.getElementById('outputQVR').innerText = txt;
+    });
+
+    // QP generation
+    document.getElementById('generateQP').addEventListener('click', () => {
+      const fn  = document.getElementById('firstName').value || 'Nil';
+      const ln  = document.getElementById('lastName').value  || 'Nil';
+      const age = document.getElementById('age').value       || 'Nil';
+      const adr = document.getElementById('address').value   || 'Nil';
+      const occ = document.getElementById('occupation').value|| 'Nil';
+      let lic  = 'Nil';
+      document.querySelectorAll('input[name="license"]:checked').forEach(c=>lic=c.value);
+      const other = Array.from(document.querySelectorAll('input[name="otherLicenses"]:checked'))
+                         .map(c=>c.value).join(', ') || 'Nil';
+      const flags= document.getElementById('qpFlags').value || 'Nil';
+      const txt = `~y~First Name:~b~${fn} ~y~Last Name:~b~${ln} ~y~Age:~b~${age} ~y~Address:~b~${adr} ~y~Occupation:~b~${occ} ~y~Licenses:~b~${[lic,other].filter(v=>v!=='Nil').join(', ')||'Nil'} ~y~Flags:~b~${flags}`;
+      document.getElementById('outputQP').innerText = txt;
+    });
+
+    // Click-to-select helper
+    function selectText(el) {
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+  </script>
 </body>
 </html>
